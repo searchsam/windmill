@@ -1,2 +1,2 @@
 # windmill
-Simple development environment with podman
+Simple development environment for laravel with podman

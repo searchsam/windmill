@@ -1,0 +1,60 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-5.1.0
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2024-06-09T03:59:51Z"
+  labels:
+    app: larapod
+  name: larapod
+spec:
+  containers:
+  - args:
+    - mysqld
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: root_password
+    - name: MYSQL_USER
+      value: laravel_user
+    - name: MYSQL_PASSWORD
+      value: laravel_password
+    - name: MYSQL_DATABASE
+      value: laravel_db
+    image: docker.io/library/mysql:8.0
+    name: mysql
+    ports:
+    - containerPort: 8025
+      hostPort: 8025
+    - containerPort: 80
+      hostPort: 8080
+    - containerPort: 3306
+      hostPort: 33060
+    volumeMounts:
+    - mountPath: /var/lib/mysql
+      name: 21e9249088a81ed017565c59a6b601f7b127b43a1cd668ec48587dbe94354858-pvc
+  - image: docker.io/axllent/mailpit:latest
+    name: mailpit
+  - args:
+    - php-fpm
+    image: localhost/larapod-php-fpm:latest
+    name: php
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: home-searchsam-Documentos-credits-backend-api-host-0
+  - args:
+    image: localhost/larapod-nginx:latest
+    name: nginx
+    volumeMounts:
+    - mountPath: /var/www/html
+      name: home-searchsam-Documentos-credits-backend-api-host-0
+  restartPolicy: Always
+  volumes:
+  - name: 21e9249088a81ed017565c59a6b601f7b127b43a1cd668ec48587dbe94354858-pvc
+    persistentVolumeClaim:
+      claimName: 21e9249088a81ed017565c59a6b601f7b127b43a1cd668ec48587dbe94354858
+  - hostPath:
+      path: /home/searchsam/Documentos/credits-backend-api
+      type: Directory
+    name: home-searchsam-Documentos-credits-backend-api-host-0
