@@ -1,13 +1,14 @@
 # Usa una imagen base mínima de Linux
-FROM debian:bullseye-slim
+FROM docker.io/library/debian:bullseye-slim
 
 # Establece variables de entorno para NVM
-ENV NVM_DIR=/usr/local/nvm
+ENV NVM_DIR=/root/
 ENV NODE_VERSION=v20.15.0
 
 # Instala las dependencias necesarias
 RUN apt-get update && apt-get install -y \
     curl \
+    wget \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
@@ -17,19 +18,12 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
     && nvm install $NODE_VERSION \
     && nvm use $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
-    && curl -fsSL https://get.pnpm.io/install.sh | bash
+    && wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.bashrc" SHELL="$(which bash)" bash -
 
 # Añadir NVM, Node y PNPM al PATH
-ENV PATH="$NVM_DIR/versions/node/v$NODE_VERSION/bin:/root/.local/share/pnpm:/usr/local/share/pnpm:$PATH"
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PNPM_PATH /root/.local/share/pnpm:/usr/local/share/pnpm
+ENV PATH      $NVM_DIR/v$NODE_VERSION/bin:$PNPM_PATH:$PATH
 
 # Directorio de trabajo
-WORKDIR /usr/src/app
-
-# Copia el contenido del directorio actual al directorio de trabajo del contenedor
-COPY . .
-
-# Exponer el puerto necesario
-EXPOSE 3000 5173
-
-# Comando predeterminado
-CMD ["node"]
+WORKDIR /root/app
