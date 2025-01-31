@@ -46,7 +46,7 @@ git clone https://github.com/searchsam/windmill.git
 
 ### Add laravel project
 
-Enter into windmill folder and add the path of the laravel project into `laravel.yaml` file on the `volumes` section.
+Go into windmill folder and add the path of the laravel project into `laravel.yaml` file on the `volumes` section.
 
 ```yaml
 - hostPath:
@@ -57,8 +57,11 @@ Enter into windmill folder and add the path of the laravel project into `laravel
 ### Build Pod
 
 ```bashscript
-$ cd windmill
-podman play kube larapod.yaml
+$ podman play kube larapod.yaml
 ```
 
 Now Pod is running.
+
+## Extra
+
+For better control of containers you can install Podman Desktop from here https://podman-desktop.io/downloads.
