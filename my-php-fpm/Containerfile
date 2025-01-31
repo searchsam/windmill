@@ -1,5 +1,5 @@
 # Usa la imagen oficial de PHP como base
-FROM docker.io/library/php:8.1-fpm
+FROM docker.io/library/php:8.2-fpm
 
 # Instala las dependencias necesarias, incluyendo oniguruma y Composer
 RUN apt-get update && apt-get install -y \
@@ -10,12 +10,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libcurl4-openssl-dev \
+    libxslt-dev \
     zip \
     unzip \
     curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mbstring zip soap bcmath ctype intl
+    && docker-php-ext-install pdo_mysql mbstring zip soap bcmath ctype intl xsl
 
 # Instala Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

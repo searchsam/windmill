@@ -31,7 +31,7 @@ spec:
     name: mysqlcontainer
     ports:
     - containerPort: 80
-      hostPort: 8080
+      hostPort: 8000
     - containerPort: 443
       hostPort: 4430
     - containerPort: 3306
@@ -68,6 +68,6 @@ spec:
     persistentVolumeClaim:
       claimName: aee287c71c2f145f4f8eae1f8f396719cb57d6fd85086cde2491aa359fc703c5
   - hostPath:
-      path: /path/to/project
+      path: /home/searchsam/Documentos/credits-backend-api
       type: Directory
     name: home-searchsam-Documentos-credits-backend-api-host-0
