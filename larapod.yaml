@@ -27,18 +27,18 @@ spec:
       image: docker.io/axllent/mailpit:latest
       ports:
         - containerPort: 8025
-          hostPort: 8025
+          hostPort: 80250
 
     - name: phpcontainer #PHP
-      image: my-php-fpm:latest
+      image: php-fpm-image:latest
       args:
         - php-fpm
       volumeMounts:
         - mountPath: /var/www/html
-          name: laravel-data
+          name: code-data
 
     - name: nginxcontainer #Nginx
-      image: my-nginx:latest
+      image: nginx-image:latest
       args:
         - nginx
         - -g
@@ -53,10 +53,10 @@ spec:
           name: code-data
 
     - name: nodecontainer # NodeJs
-      image: my-node:latest
+      image: node-image:latest
       ports:
         - containerPort: 5173
-          hostPort: 5173
+          hostPort: 51730
       volumeMounts:
         - mountPath: /var/www/html
           name: code-data
@@ -70,8 +70,8 @@ spec:
   volumes:
     - name: db-data
       hostPath:
-        path: /home/searchsam/Documentos/credits-backend-api/mysql
+        path: ~/projects/project/mysql
     - name: code-data
       hostPath:
-        path: /home/searchsam/Documentos/credits-backend-api
+        path: ~/projects/project
         type: Directory
